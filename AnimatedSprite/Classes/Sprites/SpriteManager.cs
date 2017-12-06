@@ -11,6 +11,12 @@ namespace AnimatedSprite.Classes.Sprites
         List<Sprite> spriteList;
         UserSprite player;
 
+        int enemySpawnMinMilliseconds = 1000;
+        int enemySpawnMaxMilliseconds = 2000;
+        int enemyMinSpeed = 2;
+        int enemyMaxSpeed = 6;
+        int nextSpawnTime = 0;
+
         public SpriteManager(Game game) 
             : base(game)
         {
@@ -28,6 +34,7 @@ namespace AnimatedSprite.Classes.Sprites
             // TODO: Add initialization logic here                        
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
             spriteList = new List<Sprite>();
+            ResetSpawnTime();
 
             base.Initialize();
         }
@@ -44,6 +51,7 @@ namespace AnimatedSprite.Classes.Sprites
                 Vector2.Zero, new Vector2(6, 6), new Point(6, 8), 
                 new Point(75, 75), new Point(0, 0), 10);
 
+            /*
             spriteList.Add(
                 new AutomatedSprite(
                     Game.Content.Load<Texture2D>(@"Images/plus"),
@@ -67,6 +75,7 @@ namespace AnimatedSprite.Classes.Sprites
                     Game.Content.Load<Texture2D>(@"Images/skullball"),
                     new Vector2(600, 400), new Vector2(-3f, 1f), new Point(6, 8),
                     new Point(75, 75), new Point(0, 0), 10, true));
+            */
 
             base.LoadContent();
         }
@@ -74,6 +83,16 @@ namespace AnimatedSprite.Classes.Sprites
         public override void Update(GameTime gameTime)
         {
             // TODO: Add update logic here
+
+            // Check for spawn
+            nextSpawnTime -= gameTime.ElapsedGameTime.Milliseconds;
+            if (nextSpawnTime < 0)
+            {
+                SpawnEnemy();
+
+                // Reset the spawn timer
+                ResetSpawnTime();
+            }
 
             // Update player
             player.Update(gameTime, Game.Window.ClientBounds);
@@ -109,6 +128,18 @@ namespace AnimatedSprite.Classes.Sprites
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void ResetSpawnTime()
+        {
+            nextSpawnTime = ((Game1)Game).rnd.Next(
+                enemySpawnMinMilliseconds,
+                enemySpawnMaxMilliseconds);
+        }
+
+        private void SpawnEnemy()
+        {
+
         }
     }
 }

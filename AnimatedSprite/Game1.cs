@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using AnimatedSprite.Classes.Sprites;
@@ -14,46 +15,8 @@ namespace AnimatedSprite
         SpriteBatch spriteBatch;
 
         SpriteManager spriteManager;
-        MouseState prevMouseState;
 
-        // Rings sprite variables
-        Texture2D ringsTexture;
-        Vector2 ringsPosition;        
-        Point ringsFrameSize;
-        Point ringsCurrentFrame;
-        Point ringsSheetSize;
-        int ringsTimeSinceLastFrame;
-        int ringsMsPerFrame;
-        float ringsXExtent;
-        float ringsYExtent;
-        const float ringsSpeed = 6;
-        const int ringsRectOffset = 10;
-
-        // Skullball sprite variables
-        Texture2D skullTexture;
-        Vector2 skullPosition;
-        Vector2 skullSpeed;
-        Point skullFrameSize;
-        Point skullCurrentFrame;
-        Point skullSheetSize;
-        int skullTimeSinceLastFrame;
-        int skullMsPerFrame;
-        float skullXExtent;
-        float skullYExtent;
-        const int skullRectOffset = 10;
-
-        // Plus sprite variables
-        Texture2D plusTexture;
-        Vector2 plusPosition;
-        Vector2 plusSpeed;
-        Point plusFrameSize;
-        Point plusCurrentFrame;
-        Point plusSheetSize;
-        int plusTimeSinceLastFrame;
-        int plusMsPerFrame;
-        float plusXExtent;
-        float plusYExtent;
-        const int plusRectOffset = 10;
+        public Random rnd { get; private set; }
 
         public Game1()
         {
@@ -62,6 +25,9 @@ namespace AnimatedSprite
 
             // This changes the framerate of the game
             //TargetElapsedTime = new System.TimeSpan(0, 0, 0, 0, 50); // Call GameUpdate every 50 milliseconds (20fps)
+
+            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferHeight = 768;
         }
 
         /// <summary>
@@ -78,6 +44,9 @@ namespace AnimatedSprite
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            // Randomizer
+            rnd = new Random(DateTime.Now.Millisecond);
 
             base.Initialize();
         }
