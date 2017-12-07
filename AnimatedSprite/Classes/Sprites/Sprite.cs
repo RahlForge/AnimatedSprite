@@ -14,21 +14,21 @@ namespace AnimatedSprite.Classes.Sprites
         protected int collisionOffset;        
         protected int millisecondsPerFrame;
         protected int timeSinceLastFrame;
-        protected bool edgeBounce;
+        protected bool edgeBounce;        
 
         const int defaultMsPerFrame = 16;
 
         public Sprite(Texture2D textureImage, Vector2 position, Vector2 speed,
             Point sheetSize, Point frameSize, Point currentFrame, int collisionOffset)
             : this(textureImage, position, speed, sheetSize, frameSize, currentFrame,
-                  defaultMsPerFrame, collisionOffset)
+                  collisionOffset, defaultMsPerFrame)
         {
 
         }
 
         public Sprite(Texture2D textureImage, Vector2 position, Vector2 speed,
-            Point sheetSize, Point frameSize, Point currentFrame, 
-            int millisecondsPerFrame, int collisionOffset)
+            Point sheetSize, Point frameSize, Point currentFrame, int collisionOffset,
+            int millisecondsPerFrame)
         {
             this.textureImage = textureImage;
             this.position = position;
@@ -84,6 +84,24 @@ namespace AnimatedSprite.Classes.Sprites
                 (int)position.Y + collisionOffset,
                 frameSize.X - (collisionOffset * 2),
                 frameSize.Y - (collisionOffset * 2));
+        }
+
+        public bool IsOutOfBounds(Rectangle clientBounds)
+        {
+            // If sprite is out-of-bounds, return true
+            if (position.X < -frameSize.X ||
+                position.X > clientBounds.Width ||
+                position.Y < -frameSize.Y ||
+                position.Y > clientBounds.Height)
+                return true;
+            
+            // Otherwise, fall-through to false
+            return false;
+        }
+
+        public Vector2 Position
+        {
+            get { return position; }
         }
     }
 }

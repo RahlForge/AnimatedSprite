@@ -18,10 +18,10 @@ namespace AnimatedSprite.Classes.Sprites
         }
 
         public UserSprite(Texture2D textureImage, Vector2 position, Vector2 speed,
-            Point sheetSize, Point frameSize, Point currentFrame, int millisecondsPerFrame, 
-            int collisionOffset)
+            Point sheetSize, Point frameSize, Point currentFrame, int collisionOffset,
+            int millisecondsPerFrame)
             : base(textureImage, position, speed, sheetSize, frameSize, currentFrame,
-                 millisecondsPerFrame, collisionOffset)
+                 collisionOffset, millisecondsPerFrame)
         {
 
         }

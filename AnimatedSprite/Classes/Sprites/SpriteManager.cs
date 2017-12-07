@@ -98,12 +98,23 @@ namespace AnimatedSprite.Classes.Sprites
             player.Update(gameTime, Game.Window.ClientBounds);
 
             // Update all remaining sprites
-            foreach (Sprite s in spriteList)
+            for (int i = 0; i < spriteList.Count; i++)
             {
+                Sprite s = spriteList[i];
+
                 s.Update(gameTime, Game.Window.ClientBounds);
 
+                if (s.IsOutOfBounds(Game.Window.ClientBounds))
+                {
+                    spriteList.RemoveAt(i);
+                    --i;
+                }
+
                 if (s.GetCollisionRect().Intersects(player.GetCollisionRect()))
-                    Game.Exit();
+                {
+                    spriteList.RemoveAt(i);
+                    --i;
+                }
             }
 
             base.Update(gameTime);
@@ -139,7 +150,59 @@ namespace AnimatedSprite.Classes.Sprites
 
         private void SpawnEnemy()
         {
+            Vector2 speed = Vector2.Zero;
+            Vector2 position = Vector2.Zero;
 
+            // Default frame size
+            Point frameSize = new Point(75, 75);
+
+            // Pick a screen side, position and speed
+            switch (((Game1)Game).rnd.Next(4))
+            {
+                case 0: // Right-to-Left
+                    position = new Vector2(
+                        -frameSize.X,
+                        ((Game1)Game).rnd.Next(0,
+                        Game.GraphicsDevice.PresentationParameters.BackBufferHeight - frameSize.Y));
+                    speed = new Vector2(((Game1)Game).rnd.Next(
+                        enemyMinSpeed, enemyMaxSpeed), 0f);
+                    break;
+                case 1: // Left-to-Right
+                    position = new Vector2(
+                        Game.GraphicsDevice.PresentationParameters.BackBufferWidth,
+                        ((Game1)Game).rnd.Next(
+                        Game.GraphicsDevice.PresentationParameters.BackBufferHeight - frameSize.Y));
+                    speed = new Vector2(-((Game1)Game).rnd.Next(
+                        enemyMinSpeed, enemyMaxSpeed), 0);
+                    break;
+                case 2: // Top-to-Bottom
+                    position = new Vector2(
+                        ((Game1)Game).rnd.Next(0,
+                            Game.GraphicsDevice.PresentationParameters.BackBufferWidth - frameSize.X),
+                        -frameSize.Y);
+                    speed = new Vector2(0, ((Game1)Game).rnd.Next(enemyMinSpeed, enemyMaxSpeed));
+                    break;
+                default: // Bottom-to-Top
+                    position = new Vector2(
+                        ((Game1)Game).rnd.Next(0,
+                            Game.GraphicsDevice.PresentationParameters.BackBufferWidth - frameSize.X),
+                        Game.GraphicsDevice.PresentationParameters.BackBufferHeight);
+                    speed = new Vector2(0, -((Game1)Game).rnd.Next(enemyMinSpeed, enemyMaxSpeed));
+                    break;
+            }
+
+            // Create the sprite at the random position and speed, starting at a random frame
+            spriteList.Add(new EvadingSprite(
+                Game.Content.Load<Texture2D>(@"Images/skullball"), position, speed,
+                new Point(6, 8), frameSize, new Point(
+                    ((Game1)Game).rnd.Next(1, 6), 
+                    ((Game1)Game).rnd.Next(1, 8)), 
+                10, this, 0.75f, 150));
+        }
+
+        public Vector2 GetPlayerPosition()
+        {
+            return player.Position;
         }
     }
 }

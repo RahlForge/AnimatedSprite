@@ -8,10 +8,10 @@ namespace AnimatedSprite.Classes.Sprites
         private bool confineToWindow;
 
         public AutomatedSprite(Texture2D textureImage, Vector2 position, Vector2 speed,
-            Point sheetSize, Point frameSize, Point currentFrame, int millisecondsPerFrame,
-            int collisionOffset, bool confineToWindow = false)
+            Point sheetSize, Point frameSize, Point currentFrame, int collisionOffset,
+            int millisecondsPerFrame, bool confineToWindow = false)
             : base(textureImage, position, speed, sheetSize, frameSize, currentFrame,
-                  millisecondsPerFrame, collisionOffset)
+                  collisionOffset, millisecondsPerFrame)
         {
             this.confineToWindow = confineToWindow;
         }
