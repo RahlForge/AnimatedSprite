@@ -24,3 +24,16 @@ c:\users\david.rahl\documents\visual studio 2017\Projects\AnimatedSprite\Animate
 c:\Users\david.rahl\Documents\Visual Studio 2017\Projects\AnimatedSprite\AnimatedSprite\obj\x86\Debug\AnimatedSprite.csprojResolveAssemblyReference.cache
 c:\Users\david.rahl\Documents\Visual Studio 2017\Projects\AnimatedSprite\AnimatedSprite\bin\Windows\x86\Debug\Content\Images\plus.xnb
 c:\Users\david.rahl\Documents\Visual Studio 2017\Projects\AnimatedSprite\AnimatedSprite\bin\Windows\x86\Debug\Content\Images\skullball.xnb
+C:\Users\david.rahl\Documents\Visual Studio 2017\Projects\AnimatedSprite\AnimatedSprite\bin\Windows\x86\Debug\Content\Audio\boltcollision.xnb
+C:\Users\david.rahl\Documents\Visual Studio 2017\Projects\AnimatedSprite\AnimatedSprite\bin\Windows\x86\Debug\Content\Audio\fourbladescollision.xnb
+C:\Users\david.rahl\Documents\Visual Studio 2017\Projects\AnimatedSprite\AnimatedSprite\bin\Windows\x86\Debug\Content\Audio\pluscollision.xnb
+C:\Users\david.rahl\Documents\Visual Studio 2017\Projects\AnimatedSprite\AnimatedSprite\bin\Windows\x86\Debug\Content\Audio\skullcollision.xnb
+C:\Users\david.rahl\Documents\Visual Studio 2017\Projects\AnimatedSprite\AnimatedSprite\bin\Windows\x86\Debug\Content\Audio\start.xnb
+C:\Users\david.rahl\Documents\Visual Studio 2017\Projects\AnimatedSprite\AnimatedSprite\bin\Windows\x86\Debug\Content\Audio\threebladescollision.xnb
+C:\Users\david.rahl\Documents\Visual Studio 2017\Projects\AnimatedSprite\AnimatedSprite\bin\Windows\x86\Debug\Content\Audio\track.xnb
+C:\Users\david.rahl\Documents\Visual Studio 2017\Projects\AnimatedSprite\AnimatedSprite\bin\Windows\x86\Debug\Content\Fonts\Score.xnb
+C:\Users\david.rahl\Documents\Visual Studio 2017\Projects\AnimatedSprite\AnimatedSprite\bin\Windows\x86\Debug\Content\Images\background.xnb
+C:\Users\david.rahl\Documents\Visual Studio 2017\Projects\AnimatedSprite\AnimatedSprite\bin\Windows\x86\Debug\Content\Images\bolt.xnb
+C:\Users\david.rahl\Documents\Visual Studio 2017\Projects\AnimatedSprite\AnimatedSprite\bin\Windows\x86\Debug\Content\Images\fourblades.xnb
+C:\Users\david.rahl\Documents\Visual Studio 2017\Projects\AnimatedSprite\AnimatedSprite\bin\Windows\x86\Debug\Content\Images\threeblades.xnb
+C:\Users\david.rahl\Documents\Visual Studio 2017\Projects\AnimatedSprite\AnimatedSprite\bin\Windows\x86\Debug\Content\Audio\track.wma

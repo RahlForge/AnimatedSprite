@@ -44,6 +44,7 @@
     <Compile Include="Classes\Sprites\AutomatedSprite.cs" />
     <Compile Include="Classes\Sprites\ChasingSprite.cs" />
     <Compile Include="Classes\Sprites\EvadingSprite.cs" />
+    <Compile Include="Classes\Sprites\RandomSprite.cs" />
     <Compile Include="Classes\Sprites\Sprite.cs" />
     <Compile Include="Classes\Sprites\SpriteManager.cs" />
     <Compile Include="Classes\Sprites\UserSprite.cs" />

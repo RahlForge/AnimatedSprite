@@ -14,9 +14,10 @@ namespace AnimatedSprite.Classes.Sprites
 
         public EvadingSprite(Texture2D textureImage, Vector2 position, Vector2 speed,
             Point sheetSize, Point frameSize, Point currentFrame, int collisionOffset,
-            SpriteManager spriteManager, float evasionSpeedModifier, int evasionRange)
+            string collisionEffectName, int scoreValue, SpriteManager spriteManager, 
+            float evasionSpeedModifier, int evasionRange)
             : base(textureImage, position, speed, sheetSize, frameSize, currentFrame,
-                  collisionOffset)
+                  collisionOffset, collisionEffectName, scoreValue)
         {
             this.spriteManager = spriteManager;
             this.evasionSpeedModifier = evasionSpeedModifier;
@@ -27,10 +28,10 @@ namespace AnimatedSprite.Classes.Sprites
         // comments
         public EvadingSprite(Texture2D textureImage, Vector2 position, Vector2 speed,
             Point sheetSize, Point frameSize, Point currentFrame, int collisionOffset,
-            int millisecondsPerFrame, SpriteManager spriteManager, 
-            float evasionSpeedModifier, int evasionRange)
+            int millisecondsPerFrame, string collisionEffectName, int scoreValue, 
+            SpriteManager spriteManager, float evasionSpeedModifier, int evasionRange)
             : base(textureImage, position, speed, sheetSize, frameSize, currentFrame,
-                  collisionOffset, millisecondsPerFrame)
+                  collisionOffset, millisecondsPerFrame, collisionEffectName, scoreValue)
         {
             this.spriteManager = spriteManager;
             this.evasionSpeedModifier = evasionSpeedModifier;

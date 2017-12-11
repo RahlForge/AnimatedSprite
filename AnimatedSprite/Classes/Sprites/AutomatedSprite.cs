@@ -9,18 +9,18 @@ namespace AnimatedSprite.Classes.Sprites
 
         public AutomatedSprite(Texture2D textureImage, Vector2 position, Vector2 speed,
             Point sheetSize, Point frameSize, Point currentFrame, int collisionOffset,
-            int millisecondsPerFrame, bool confineToWindow = false)
+            int millisecondsPerFrame, string collisionEffectName, int scoreValue, bool confineToWindow = false)
             : base(textureImage, position, speed, sheetSize, frameSize, currentFrame,
-                  collisionOffset, millisecondsPerFrame)
+                  collisionOffset, millisecondsPerFrame, collisionEffectName, scoreValue)
         {
             this.confineToWindow = confineToWindow;
         }
 
         public AutomatedSprite(Texture2D textureImage, Vector2 position, Vector2 speed,
             Point sheetSize, Point frameSize, Point currentFrame, int collisionOffset,
-            bool confineToWindow = false)
+            string collisionEffectName, int scoreValue, bool confineToWindow = false)
             : base(textureImage, position, speed, sheetSize, frameSize, currentFrame,
-                  collisionOffset)
+                  collisionOffset, collisionEffectName, scoreValue)
         {
             this.confineToWindow = confineToWindow;
         }

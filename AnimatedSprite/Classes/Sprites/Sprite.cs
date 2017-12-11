@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace AnimatedSprite.Classes.Sprites
 {
@@ -14,21 +15,23 @@ namespace AnimatedSprite.Classes.Sprites
         protected int collisionOffset;        
         protected int millisecondsPerFrame;
         protected int timeSinceLastFrame;
-        protected bool edgeBounce;        
+        public string CollisionEffectName { get; protected set; }
+        public int ScoreValue { get; protected set; }
 
         const int defaultMsPerFrame = 16;
 
         public Sprite(Texture2D textureImage, Vector2 position, Vector2 speed,
-            Point sheetSize, Point frameSize, Point currentFrame, int collisionOffset)
+            Point sheetSize, Point frameSize, Point currentFrame, int collisionOffset,
+            string collisionEffectName, int scoreValue)
             : this(textureImage, position, speed, sheetSize, frameSize, currentFrame,
-                  collisionOffset, defaultMsPerFrame)
+                  collisionOffset, defaultMsPerFrame, collisionEffectName, scoreValue)
         {
 
         }
 
         public Sprite(Texture2D textureImage, Vector2 position, Vector2 speed,
             Point sheetSize, Point frameSize, Point currentFrame, int collisionOffset,
-            int millisecondsPerFrame)
+            int millisecondsPerFrame, string collisionEffectName, int scoreValue)
         {
             this.textureImage = textureImage;
             this.position = position;
@@ -36,8 +39,10 @@ namespace AnimatedSprite.Classes.Sprites
             this.sheetSize = sheetSize;
             this.frameSize = frameSize;
             this.currentFrame = currentFrame;
-            this.millisecondsPerFrame = millisecondsPerFrame;
-            this.collisionOffset = collisionOffset;            
+            this.collisionOffset = collisionOffset;
+            CollisionEffectName = collisionEffectName;
+            ScoreValue = scoreValue;
+            this.millisecondsPerFrame = millisecondsPerFrame;            
         }
 
         public virtual void Update(GameTime gameTime, Rectangle clientBounds)

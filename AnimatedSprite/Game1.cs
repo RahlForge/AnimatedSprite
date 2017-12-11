@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 using AnimatedSprite.Classes.Sprites;
 
 namespace AnimatedSprite
@@ -13,9 +15,20 @@ namespace AnimatedSprite
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
         SpriteManager spriteManager;
+        Texture2D backgroundTexture;
+        enum GameState { Start, InGame, GameOver };
+        GameState currentGameState = GameState.Start;
 
+        // Audio
+        Song track;
+        SoundEffect start;
+
+        // Scoring
+        SpriteFont scoreFont;
+        int currentScore;
+
+        // Randomizer
         public Random rnd { get; private set; }
 
         public Game1()
@@ -24,10 +37,17 @@ namespace AnimatedSprite
             Content.RootDirectory = "Content";
 
             // This changes the framerate of the game
-            //TargetElapsedTime = new System.TimeSpan(0, 0, 0, 0, 50); // Call GameUpdate every 50 milliseconds (20fps)
+            // Call GameUpdate every 50 milliseconds (20fps)
+            //TargetElapsedTime = new System.TimeSpan(0, 0, 0, 0, 50); 
+            
+            // Window Size - Full            
+            //graphics.IsFullScreen = true;
+            //graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            //graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
-            graphics.PreferredBackBufferWidth = 1024;
-            graphics.PreferredBackBufferHeight = 768;
+            // Window Size - Testing
+            graphics.PreferredBackBufferWidth = 640;
+            graphics.PreferredBackBufferHeight = 480;
         }
 
         /// <summary>
@@ -48,6 +68,9 @@ namespace AnimatedSprite
             // Randomizer
             rnd = new Random(DateTime.Now.Millisecond);
 
+            // Score
+            currentScore = 0;
+
             base.Initialize();
         }
 
@@ -56,8 +79,18 @@ namespace AnimatedSprite
         /// all of your content.
         /// </summary>
         protected override void LoadContent()
-        {          
-            // TODO: use this.Content to load your game content here
+        {
+            // TODO: use this.Content to load your game content here            
+            backgroundTexture = Content.Load<Texture2D>(@"Images/background");
+
+            scoreFont = Content.Load<SpriteFont>(@"Fonts/Score");
+
+            start = Content.Load<SoundEffect>(@"Audio/start");
+            start.Play();
+
+            track = Content.Load<Song>(@"Audio/track");
+            MediaPlayer.Play(track);
+            MediaPlayer.IsRepeating = true;
         }
 
         /// <summary>
@@ -76,6 +109,16 @@ namespace AnimatedSprite
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            switch (currentGameState)
+            {
+                case GameState.Start:
+                    break;
+                case GameState.InGame:
+                    break;
+                case GameState.GameOver:
+                    break;
+            }
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || 
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -93,9 +136,27 @@ namespace AnimatedSprite
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here            
+            // TODO: Add your drawing code here       
+            spriteBatch.Begin();
+
+            // Background
+            spriteBatch.Draw(backgroundTexture,
+                new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height),
+                null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
+
+            // Score
+            spriteBatch.DrawString(scoreFont, "Score: " + currentScore,
+                new Vector2(10, 10), Color.DarkBlue, 0, Vector2.Zero,
+                1f, SpriteEffects.None, 1f);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public void AddScore(int score)
+        {
+            currentScore += score;
         }
     }
 }

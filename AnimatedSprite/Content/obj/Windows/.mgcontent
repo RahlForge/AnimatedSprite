@@ -7,5 +7,17 @@
     <File>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/Images/threerings.png</File>
     <File>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/Images/plus.png</File>
     <File>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/Images/skullball.png</File>
+    <File>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/Images/background.JPG</File>
+    <File>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/Images/bolt.png</File>
+    <File>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/Images/fourblades.png</File>
+    <File>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/Images/threeblades.png</File>
+    <File>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/Audio/boltcollision.wav</File>
+    <File>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/Audio/fourbladescollision.wav</File>
+    <File>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/Audio/pluscollision.wav</File>
+    <File>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/Audio/skullcollision.wav</File>
+    <File>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/Audio/start.wav</File>
+    <File>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/Audio/threebladescollision.wav</File>
+    <File>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/Audio/track.wav</File>
+    <File>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/Fonts/Score.spritefont</File>
   </SourceFiles>
 </SourceFileCollection>

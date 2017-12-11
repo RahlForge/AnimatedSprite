@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/Audio/fourbladescollision.wav</SourceFile>
+  <SourceTime>2008-07-25T08:09:06-04:00</SourceTime>
+  <DestFile>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/bin/Windows/Audio/fourbladescollision.xnb</DestFile>
+  <DestTime>2017-12-08T12:11:31.3670035-05:00</DestTime>
+  <Importer>WavImporter</Importer>
+  <ImporterTime>2017-03-01T10:05:36-05:00</ImporterTime>
+  <Processor>SoundEffectProcessor</Processor>
+  <ProcessorTime>2017-03-01T10:05:36-05:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

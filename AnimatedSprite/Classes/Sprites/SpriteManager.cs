@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using Microsoft.Xna.Framework.Audio;
 
 namespace AnimatedSprite.Classes.Sprites
 {
@@ -11,11 +11,22 @@ namespace AnimatedSprite.Classes.Sprites
         List<Sprite> spriteList;
         UserSprite player;
 
+        // Spawning
         int enemySpawnMinMilliseconds = 1000;
         int enemySpawnMaxMilliseconds = 2000;
         int enemyMinSpeed = 2;
         int enemyMaxSpeed = 6;
         int nextSpawnTime = 0;
+        int chanceAutomated = 60;
+        int chanceRandom = 25;
+        int chanceChasing = 10;
+        //int chanceEvading = 5;
+
+        // Scoring
+        int automatedSpriteScore = 10;
+        int randomSpiteScore = 15;
+        int chasingSpriteScore = 20;
+        int evadingSpriteScore = 0;
 
         public SpriteManager(Game game) 
             : base(game)
@@ -51,32 +62,6 @@ namespace AnimatedSprite.Classes.Sprites
                 Vector2.Zero, new Vector2(6, 6), new Point(6, 8), 
                 new Point(75, 75), new Point(0, 0), 10);
 
-            /*
-            spriteList.Add(
-                new AutomatedSprite(
-                    Game.Content.Load<Texture2D>(@"Images/plus"),
-                    new Vector2(150, 150), new Vector2(1f, -3f), new Point(6, 4),
-                    new Point(75, 75), new Point(0, 0), 10, true));
-
-            spriteList.Add(
-                new AutomatedSprite(
-                    Game.Content.Load<Texture2D>(@"Images/skullball"),
-                    new Vector2(150, 300), new Vector2(-2f, -3f), new Point(6, 8),
-                    new Point(75, 75), new Point(0, 0), 10, true));
-
-            spriteList.Add(
-                new AutomatedSprite(
-                    Game.Content.Load<Texture2D>(@"Images/plus"),
-                    new Vector2(300, 150), new Vector2(3f, -1f), new Point(6, 4),
-                    new Point(75, 75), new Point(0, 0), 10, true));
-
-            spriteList.Add(
-                new AutomatedSprite(
-                    Game.Content.Load<Texture2D>(@"Images/skullball"),
-                    new Vector2(600, 400), new Vector2(-3f, 1f), new Point(6, 8),
-                    new Point(75, 75), new Point(0, 0), 10, true));
-            */
-
             base.LoadContent();
         }
 
@@ -94,28 +79,7 @@ namespace AnimatedSprite.Classes.Sprites
                 ResetSpawnTime();
             }
 
-            // Update player
-            player.Update(gameTime, Game.Window.ClientBounds);
-
-            // Update all remaining sprites
-            for (int i = 0; i < spriteList.Count; i++)
-            {
-                Sprite s = spriteList[i];
-
-                s.Update(gameTime, Game.Window.ClientBounds);
-
-                if (s.IsOutOfBounds(Game.Window.ClientBounds))
-                {
-                    spriteList.RemoveAt(i);
-                    --i;
-                }
-
-                if (s.GetCollisionRect().Intersects(player.GetCollisionRect()))
-                {
-                    spriteList.RemoveAt(i);
-                    --i;
-                }
-            }
+            UpdateSprites(gameTime);
 
             base.Update(gameTime);
         }
@@ -191,18 +155,84 @@ namespace AnimatedSprite.Classes.Sprites
                     break;
             }
 
-            // Create the sprite at the random position and speed, starting at a random frame
-            spriteList.Add(new EvadingSprite(
-                Game.Content.Load<Texture2D>(@"Images/skullball"), position, speed,
-                new Point(6, 8), frameSize, new Point(
-                    ((Game1)Game).rnd.Next(1, 6), 
-                    ((Game1)Game).rnd.Next(1, 8)), 
-                10, this, 0.75f, 150));
+            // Get the sprite type and create the sprite at the random position and speed, starting at a random frame
+            int random = ((Game1)Game).rnd.Next(100);
+            if (random < chanceAutomated)
+                spriteList.Add(new AutomatedSprite(
+                    Game.Content.Load<Texture2D>(@"Images/threeblades"), position, speed,
+                    new Point(6, 8), frameSize, new Point(
+                        ((Game1)Game).rnd.Next(1, 6),
+                        ((Game1)Game).rnd.Next(1, 8)),
+                    10, "threebladescollision", automatedSpriteScore));
+            else if (random < chanceAutomated + chanceRandom)
+                spriteList.Add(new RandomSprite(
+                    Game.Content.Load<Texture2D>(@"Images/fourblades"), position, speed,
+                    new Point(6, 8), frameSize, new Point(
+                        ((Game1)Game).rnd.Next(1, 6),
+                        ((Game1)Game).rnd.Next(1, 8)),
+                    10, "fourbladescollision", randomSpiteScore));
+            else if (random < chanceAutomated + chanceRandom + chanceChasing)
+            {
+                if (((Game1)Game).rnd.Next(2) == 0)
+                {
+                    spriteList.Add(new ChasingSprite(
+                        Game.Content.Load<Texture2D>(@"Images/skullball"), position, speed,
+                        new Point(6, 8), frameSize, new Point(
+                            ((Game1)Game).rnd.Next(1, 6),
+                            ((Game1)Game).rnd.Next(1, 8)),
+                        10, "skullcollision", chasingSpriteScore, this));
+                }
+                else
+                {
+                    spriteList.Add(new ChasingSprite(
+                        Game.Content.Load<Texture2D>(@"Images/plus"), position, speed,
+                        new Point(6, 4), frameSize, new Point(
+                            ((Game1)Game).rnd.Next(1, 6),
+                            ((Game1)Game).rnd.Next(1, 8)),
+                        10, "pluscollision", chasingSpriteScore, this));
+                }
+            }
+            else
+                spriteList.Add(new EvadingSprite(
+                    Game.Content.Load<Texture2D>(@"Images/bolt"), position, speed,
+                    new Point(6, 8), frameSize, new Point(
+                        ((Game1)Game).rnd.Next(1, 6),
+                        ((Game1)Game).rnd.Next(1, 8)),
+                    10, "boltcollision", evadingSpriteScore, this, 0.75f, 150));          
         }
 
         public Vector2 GetPlayerPosition()
         {
             return player.Position;
+        }
+
+        private void UpdateSprites(GameTime gameTime)
+        {
+            // Update player
+            player.Update(gameTime, Game.Window.ClientBounds);
+
+            // Update all remaining sprites
+            for (int i = 0; i < spriteList.Count; i++)
+            {
+                Sprite s = spriteList[i];
+
+                s.Update(gameTime, Game.Window.ClientBounds);
+
+                if (s.IsOutOfBounds(Game.Window.ClientBounds))
+                {
+                    ((Game1)Game).AddScore(s.ScoreValue);
+                    spriteList.RemoveAt(i);
+                    --i;
+                }
+
+                if (s.GetCollisionRect().Intersects(player.GetCollisionRect()))
+                {
+                    SoundEffect soundEffect = Game.Content.Load<SoundEffect>(@"Audio/" + s.CollisionEffectName);
+                    soundEffect.Play();
+                    spriteList.RemoveAt(i);
+                    --i;
+                }
+            }
         }
     }
 }

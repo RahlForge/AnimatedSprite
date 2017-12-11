@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/Fonts/Score.spritefont</SourceFile>
+  <SourceTime>2010-08-02T10:00:04.9958092-04:00</SourceTime>
+  <DestFile>C:/Users/david.rahl/Documents/Visual Studio 2017/Projects/AnimatedSprite/AnimatedSprite/Content/bin/Windows/Fonts/Score.xnb</DestFile>
+  <DestTime>2017-12-08T12:17:43.7379269-05:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2017-03-01T10:05:36-05:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2017-03-01T10:05:36-05:00</ProcessorTime>
+  <Parameters>
+    <Key>PremultiplyAlpha</Key>
+    <Value>True</Value>
+  </Parameters>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Compressed</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

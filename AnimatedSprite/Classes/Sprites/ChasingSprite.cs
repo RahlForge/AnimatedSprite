@@ -10,9 +10,9 @@ namespace AnimatedSprite.Classes.Sprites
 
         public ChasingSprite(Texture2D textureImage, Vector2 position, Vector2 speed,
             Point sheetSize, Point frameSize, Point currentFrame, int collisionOffset,
-            SpriteManager spriteManager)
+            string collisionEffectName, int scoreValue, SpriteManager spriteManager)
             : base(textureImage, position, speed, sheetSize, frameSize, currentFrame,
-                  collisionOffset)
+                  collisionOffset, collisionEffectName, scoreValue)
         {
             this.spriteManager = spriteManager;
         }
@@ -20,9 +20,9 @@ namespace AnimatedSprite.Classes.Sprites
         // comments
         public ChasingSprite(Texture2D textureImage, Vector2 position, Vector2 speed,
             Point sheetSize, Point frameSize, Point currentFrame, int collisionOffset,
-            int millisecondsPerFrame, SpriteManager spriteManager)
+            int millisecondsPerFrame, string collisionEffectName, int scoreValue, SpriteManager spriteManager)
             : base(textureImage, position, speed, sheetSize, frameSize, currentFrame,
-                  collisionOffset, millisecondsPerFrame)
+                  collisionOffset, millisecondsPerFrame, collisionEffectName, scoreValue)
         {
             this.spriteManager = spriteManager;
         }
