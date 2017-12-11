@@ -8,7 +8,9 @@ namespace AnimatedSprite.Classes.Sprites
     {
         protected Texture2D textureImage;
         protected Vector2 position;
+        protected float scale;
         protected Vector2 speed;
+        protected Vector2 initialSpeed;
         protected Point sheetSize;
         protected Point frameSize;
         protected Point currentFrame;
@@ -19,6 +21,8 @@ namespace AnimatedSprite.Classes.Sprites
         public int ScoreValue { get; protected set; }
 
         const int defaultMsPerFrame = 16;
+        const float initialScale = 1f;
+
 
         public Sprite(Texture2D textureImage, Vector2 position, Vector2 speed,
             Point sheetSize, Point frameSize, Point currentFrame, int collisionOffset,
@@ -36,13 +40,24 @@ namespace AnimatedSprite.Classes.Sprites
             this.textureImage = textureImage;
             this.position = position;
             this.speed = speed;
+            initialSpeed = speed;
             this.sheetSize = sheetSize;
             this.frameSize = frameSize;
             this.currentFrame = currentFrame;
             this.collisionOffset = collisionOffset;
             CollisionEffectName = collisionEffectName;
             ScoreValue = scoreValue;
-            this.millisecondsPerFrame = millisecondsPerFrame;            
+            this.millisecondsPerFrame = millisecondsPerFrame;
+            ResetScale();
+        }
+
+        public Sprite(Texture2D textureImage, Vector2 position, float scale, 
+            Vector2 speed, Point sheetSize, Point frameSize, Point currentFrame, 
+            int collisionOffset, string collisionEffectName, int scoreValue)
+            : this(textureImage, position, speed, sheetSize, frameSize, currentFrame,
+                  collisionOffset, defaultMsPerFrame, collisionEffectName, scoreValue)
+        {
+            this.scale = scale;
         }
 
         public virtual void Update(GameTime gameTime, Rectangle clientBounds)
@@ -63,7 +78,7 @@ namespace AnimatedSprite.Classes.Sprites
                     currentFrame.Y * frameSize.Y,
                     frameSize.X, frameSize.Y),
                 Color.White, 0f, Vector2.Zero, 
-                1f, SpriteEffects.None, 0f);
+                scale, SpriteEffects.None, 0f);
         }
 
         protected void CycleSpriteSheet()
@@ -85,10 +100,10 @@ namespace AnimatedSprite.Classes.Sprites
 
         public Rectangle GetCollisionRect()
         {
-            return new Rectangle((int)position.X + collisionOffset,
-                (int)position.Y + collisionOffset,
-                frameSize.X - (collisionOffset * 2),
-                frameSize.Y - (collisionOffset * 2));
+            return new Rectangle((int)(position.X + (collisionOffset * scale)),
+                (int)(position.Y + (collisionOffset * scale)),
+                (int)(frameSize.X - (collisionOffset * 2) * scale),
+                (int)(frameSize.Y - (collisionOffset * 2) * scale));
         }
 
         public bool IsOutOfBounds(Rectangle clientBounds)
@@ -107,6 +122,26 @@ namespace AnimatedSprite.Classes.Sprites
         public Vector2 Position
         {
             get { return position; }
+        }
+
+        public void ModifyScale(float modifier)
+        {
+            scale *= modifier;
+        }
+
+        public void ResetScale()
+        {
+            scale = initialScale;
+        }
+
+        public void ModifySpeed(float modifier)
+        {
+            speed *= modifier;
+        }
+
+        public void ResetSpeed()
+        {
+            speed = initialSpeed;
         }
     }
 }

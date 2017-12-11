@@ -27,9 +27,10 @@ namespace AnimatedSprite
         // Scoring
         SpriteFont scoreFont;
         int currentScore;
+        int livesRemaining;
 
         // Randomizer
-        public Random rnd { get; private set; }
+        public Random rnd { get; private set; }        
 
         public Game1()
         {
@@ -61,6 +62,8 @@ namespace AnimatedSprite
             // TODO: Add your initialization logic here
             spriteManager = new SpriteManager(this);
             Components.Add(spriteManager);
+            spriteManager.Enabled = false;
+            spriteManager.Visible = false;
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -70,6 +73,7 @@ namespace AnimatedSprite
 
             // Score
             currentScore = 0;
+            livesRemaining = 3;
 
             base.Initialize();
         }
@@ -112,10 +116,18 @@ namespace AnimatedSprite
             switch (currentGameState)
             {
                 case GameState.Start:
+                    if (Keyboard.GetState().GetPressedKeys().Length > 0)
+                    {
+                        currentGameState = GameState.InGame;
+                        spriteManager.Enabled = true;
+                        spriteManager.Visible = true;
+                    }
                     break;
                 case GameState.InGame:
                     break;
                 case GameState.GameOver:
+                    if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                        Exit();
                     break;
             }
 
@@ -134,22 +146,70 @@ namespace AnimatedSprite
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
             // TODO: Add your drawing code here       
-            spriteBatch.Begin();
+            switch (currentGameState)
+            {
+                case GameState.Start:
+                    GraphicsDevice.Clear(Color.AliceBlue);
 
-            // Background
-            spriteBatch.Draw(backgroundTexture,
-                new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height),
-                null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
+                    // Draw text for "splash screen" intro
+                    spriteBatch.Begin();
+                    string text = "Avoid the blades or die!";
+                    spriteBatch.DrawString(scoreFont, text,
+                        new Vector2((Window.ClientBounds.Width / 2) -
+                            (scoreFont.MeasureString(text).X / 2),
+                            (Window.ClientBounds.Height / 2) -
+                            (scoreFont.MeasureString(text).Y / 2)),
+                        Color.SaddleBrown);
 
-            // Score
-            spriteBatch.DrawString(scoreFont, "Score: " + currentScore,
-                new Vector2(10, 10), Color.DarkBlue, 0, Vector2.Zero,
-                1f, SpriteEffects.None, 1f);
+                    text = "Press any key to begin";
+                    spriteBatch.DrawString(scoreFont, text,
+                        new Vector2((Window.ClientBounds.Width / 2) -
+                            (scoreFont.MeasureString(text).X / 2),
+                            (Window.ClientBounds.Height / 2) -
+                            (scoreFont.MeasureString(text).Y / 2) + 30),
+                        Color.SaddleBrown);
 
-            spriteBatch.End();
+                    spriteBatch.End();
+                    break;
+
+                case GameState.InGame:
+                    GraphicsDevice.Clear(Color.CornflowerBlue);
+                    spriteBatch.Begin();
+
+                    // Background
+                    spriteBatch.Draw(backgroundTexture,
+                        new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height),
+                        null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
+
+                    // Score
+                    spriteBatch.DrawString(scoreFont, "Score: " + currentScore,
+                        new Vector2(10, 10), Color.DarkBlue, 0, Vector2.Zero,
+                        1f, SpriteEffects.None, 1f);
+
+                    spriteBatch.End();
+                    break;
+                case GameState.GameOver:
+                    GraphicsDevice.Clear(Color.AliceBlue);
+                    spriteBatch.Begin();
+                    string gameover = "Game Over! The blades win again!"; 
+                    spriteBatch.DrawString(scoreFont, gameover,
+                        new Vector2((Window.ClientBounds.Width / 2) -
+                            (scoreFont.MeasureString(gameover).X / 2),
+                            (Window.ClientBounds.Height / 2) -
+                            (scoreFont.MeasureString(gameover).Y / 2)),
+                        Color.SaddleBrown);
+                    gameover = "(Press ENTER to exit)";
+                    spriteBatch.DrawString(scoreFont, gameover,
+                        new Vector2((Window.ClientBounds.Width / 2) -
+                            (scoreFont.MeasureString(gameover).X / 2),
+                            (Window.ClientBounds.Height / 2) -
+                            (scoreFont.MeasureString(gameover).Y / 2) + 30),
+                        Color.SaddleBrown);
+                    spriteBatch.End();
+                    break;
+            }
+            
 
             base.Draw(gameTime);
         }
@@ -157,6 +217,21 @@ namespace AnimatedSprite
         public void AddScore(int score)
         {
             currentScore += score;
+        }
+
+        public int LivesRemaining
+        {
+            get { return livesRemaining; }
+            set
+            {
+                livesRemaining = value;
+                if (livesRemaining == 0)
+                {
+                    currentGameState = GameState.GameOver;
+                    spriteManager.Enabled = false;
+                    spriteManager.Visible = false;
+                }
+            }
         }
     }
 }

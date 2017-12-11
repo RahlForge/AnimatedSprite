@@ -9,6 +9,7 @@ namespace AnimatedSprite.Classes.Sprites
     {
         SpriteBatch spriteBatch;
         List<Sprite> spriteList;
+        List<AutomatedSprite> playerLives;
         UserSprite player;
 
         // Spawning
@@ -28,6 +29,12 @@ namespace AnimatedSprite.Classes.Sprites
         int chasingSpriteScore = 20;
         int evadingSpriteScore = 0;
 
+        // Powerups
+        int scaleExpiration = 0;
+        int speedExpiration = 0;
+        int freezeExpiration = 0;
+        float playerHoldSpeed;
+
         public SpriteManager(Game game) 
             : base(game)
         {
@@ -45,6 +52,7 @@ namespace AnimatedSprite.Classes.Sprites
             // TODO: Add initialization logic here                        
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
             spriteList = new List<Sprite>();
+            playerLives = new List<AutomatedSprite>();
             ResetSpawnTime();
 
             base.Initialize();
@@ -61,6 +69,15 @@ namespace AnimatedSprite.Classes.Sprites
                 Game.Content.Load<Texture2D>(@"Images/threerings"),
                 Vector2.Zero, new Vector2(6, 6), new Point(6, 8), 
                 new Point(75, 75), new Point(0, 0), 10);
+
+            for (int i = 0; i < ((Game1)Game).LivesRemaining; i++)
+            {
+                int offset = 10 + i * 40;
+                playerLives.Add(new AutomatedSprite(
+                    Game.Content.Load<Texture2D>(@"Images/threerings"),
+                    new Vector2(offset, 35), 0.5f, Vector2.Zero, new Point(6, 8),
+                    new Point(75, 75), new Point(0, 0), 10, "", 0));
+            }
 
             base.LoadContent();
         }
@@ -81,6 +98,8 @@ namespace AnimatedSprite.Classes.Sprites
 
             UpdateSprites(gameTime);
 
+            CheckPowerUpExpiration(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -96,9 +115,10 @@ namespace AnimatedSprite.Classes.Sprites
 
             // Draw all remaining sprites
             foreach (Sprite s in spriteList)
-            {
                 s.Draw(gameTime, spriteBatch);
-            }
+
+            foreach (Sprite s in playerLives)
+                s.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
 
@@ -112,6 +132,9 @@ namespace AnimatedSprite.Classes.Sprites
                 enemySpawnMaxMilliseconds);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void SpawnEnemy()
         {
             Vector2 speed = Vector2.Zero;
@@ -206,6 +229,11 @@ namespace AnimatedSprite.Classes.Sprites
             return player.Position;
         }
 
+        /// <summary>
+        /// Updates all sprites controlled by the SpriteManager, cycling their
+        /// sprite sheet and detecting collisions
+        /// </summary>
+        /// <param name="gameTime">A snapshot of the currently elapsed game time</param>
         private void UpdateSprites(GameTime gameTime)
         {
             // Update player
@@ -227,10 +255,82 @@ namespace AnimatedSprite.Classes.Sprites
 
                 if (s.GetCollisionRect().Intersects(player.GetCollisionRect()))
                 {
-                    SoundEffect soundEffect = Game.Content.Load<SoundEffect>(@"Audio/" + s.CollisionEffectName);
+                    SoundEffect soundEffect = Game.Content.Load<SoundEffect>(
+                        @"Audio/" + s.CollisionEffectName);
                     soundEffect.Play();
+
+                    if (s is AutomatedSprite ||
+                        s is RandomSprite)
+                    {
+                        playerLives.RemoveAt(playerLives.Count - 1);
+                        --((Game1)Game).LivesRemaining;
+                    }
+                    else if (s.CollisionEffectName == "pluscollision")
+                    {
+                        scaleExpiration = 5000;
+                        player.ModifyScale(2f);
+                    }
+                    else if (s.CollisionEffectName == "skullcollision")
+                    {
+                        freezeExpiration = 2000;
+                        player.ModifySpeed(0f);
+                    }
+                    else if (s.CollisionEffectName == "boltcollision")
+                    {
+                        speedExpiration = 5000;
+                        player.ModifySpeed(2f);
+                    }
+
                     spriteList.RemoveAt(i);
                     --i;
+                }
+            }
+
+            foreach (Sprite s in playerLives)
+                s.Update(gameTime, Game.Window.ClientBounds);
+        }
+
+        protected void UnfreezePlayer()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameTime"></param>
+        protected void CheckPowerUpExpiration(GameTime gameTime)
+        {
+            // Check scaling power-ups
+            if (scaleExpiration > 0)
+            {
+                scaleExpiration -= gameTime.ElapsedGameTime.Milliseconds;
+                if (scaleExpiration <= 0)
+                {
+                    scaleExpiration = 0;
+                    player.ResetScale();
+                }
+            }
+
+            // Check speed power-ups
+            if (speedExpiration > 0)
+            {
+                speedExpiration -= gameTime.ElapsedGameTime.Milliseconds;
+                if (speedExpiration <= 0)
+                {
+                    speedExpiration = 0;
+                    player.ResetSpeed();
+                }
+            }
+
+            // Check speed power-ups
+            if (freezeExpiration > 0)
+            {
+                freezeExpiration -= gameTime.ElapsedGameTime.Milliseconds;
+                if (freezeExpiration <= 0)
+                {
+                    freezeExpiration = 0;
+                    UnfreezePlayer();
                 }
             }
         }
